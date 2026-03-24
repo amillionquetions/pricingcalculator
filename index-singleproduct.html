@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Break-Even Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 32px;
+    }
+
+    p {
+      color: #4b5563;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 14px 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .result-box {
+      background: #eff6ff;
+      padding: 18px;
+      border-radius: 12px;
+    }
+
+    .result-box h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      color: #1e3a8a;
+    }
+
+    .result-box .value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #111827;
+    }
+
+    .explanation {
+      margin-top: 20px;
+      padding: 16px;
+      background: #f9fafb;
+      border-left: 5px solid #2563eb;
+      border-radius: 8px;
+      line-height: 1.6;
+    }
+
+    canvas {
+      width: 100%;
+      max-width: 100%;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    .error {
+      margin-top: 16px;
+      color: #b91c1c;
+      font-weight: bold;
+    }
+
+    .footer-note {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Break-Even Calculator</h1>
+      <p>Calculate how many units you need to sell to cover your costs and start making profit.</p>
+
+      <div class="grid">
+        <div>
+          <label for="price">Selling Price per Unit (£)</label>
+          <input type="number" id="price" placeholder="e.g. 20" step="0.01" />
+        </div>
+
+        <div>
+          <label for="cost">Variable Cost per Unit (£)</label>
+          <input type="number" id="cost" placeholder="e.g. 8" step="0.01" />
+        </div>
+
+        <div>
+          <label for="fixed">Fixed Costs (£)</label>
+          <input type="number" id="fixed" placeholder="e.g. 1200" step="0.01" />
+        </div>
+
+        <div>
+          <label for="sales">Expected Units Sold</label>
+          <input type="number" id="sales" placeholder="e.g. 150" step="1" />
+        </div>
+      </div>
+
+      <button onclick="calculateBreakEven()">Calculate</button>
+
+      <div id="error" class="error"></div>
+
+      <div class="results" id="results" style="display: none;">
+        <div class="result-box">
+          <h3>Break-Even Units</h3>
+          <div class="value" id="breakevenUnits">-</div>
+        </div>
+
+        <div class="result-box">
+          <h3>Break-Even Revenue</h3>
+          <div class="value" id="breakevenRevenue">-</div>
+        </div>
+
+        <div class="result-box">
+          <h3>Expected Profit / Loss</h3>
+          <div class="value" id="expectedProfit">-</div>
+        </div>
+      </div>
+
+      <div id="explanation" class="explanation" style="display: none;"></div>
+
+      <canvas id="profitChart" width="900" height="400"></canvas>
+      <div class="footer-note">Chart shows profit/loss as units sold increase.</div>
+    </div>
+  </div>
+
+  <script>
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP'
+      }).format(value);
+    }
+
+    function calculateBreakEven() {
+      const price = parseFloat(document.getElementById('price').value);
+      const cost = parseFloat(document.getElementById('cost').value);
+      const fixed = parseFloat(document.getElementById('fixed').value);
+      const sales = parseFloat(document.getElementById('sales').value) || 0;
+
+      const errorEl = document.getElementById('error');
+      const resultsEl = document.getElementById('results');
+      const explanationEl = document.getElementById('explanation');
+
+      errorEl.textContent = '';
+      resultsEl.style.display = 'none';
+      explanationEl.style.display = 'none';
+
+      if (isNaN(price) || isNaN(cost) || isNaN(fixed)) {
+        errorEl.textContent = 'Please fill in Selling Price, Variable Cost, and Fixed Costs.';
+        clearChart();
+        return;
+      }
+
+      if (price <= cost) {
+        errorEl.textContent = 'Selling price must be greater than variable cost, otherwise you can never break even.';
+        clearChart();
+        return;
+      }
+
+      if (fixed < 0 || price < 0 || cost < 0 || sales < 0) {
+        errorEl.textContent = 'Please enter valid positive numbers.';
+        clearChart();
+        return;
+      }
+
+      const contribution = price - cost;
+      const breakEvenUnits = fixed / contribution;
+      const breakEvenRevenue = breakEvenUnits * price;
+      const expectedProfit = (sales * contribution) - fixed;
+
+      document.getElementById('breakevenUnits').textContent = breakEvenUnits.toFixed(2);
+      document.getElementById('breakevenRevenue').textContent = formatCurrency(breakEvenRevenue);
+      document.getElementById('expectedProfit').textContent = formatCurrency(expectedProfit);
+
+      explanationEl.innerHTML = `
+        You need to sell <strong>${breakEvenUnits.toFixed(2)} units</strong> to cover your fixed costs.
+        Your contribution margin per unit is <strong>${formatCurrency(contribution)}</strong>.
+        ${
+          sales > 0
+            ? `If you sell <strong>${sales}</strong> units, your expected profit/loss will be <strong>${formatCurrency(expectedProfit)}</strong>.`
+            : `Enter expected units sold to see projected profit or loss.`
+        }
+      `;
+
+      resultsEl.style.display = 'grid';
+      explanationEl.style.display = 'block';
+
+      drawChart(price, cost, fixed, breakEvenUnits);
+    }
+
+    function clearChart() {
+      const canvas = document.getElementById('profitChart');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function drawChart(price, cost, fixed, breakEvenUnits) {
+      const canvas = document.getElementById('profitChart');
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width;
+      const height = canvas.height;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const padding = 60;
+      const maxUnits = Math.max(Math.ceil(breakEvenUnits * 2), 10);
+      const contribution = price - cost;
+
+      let minProfit = Infinity;
+      let maxProfit = -Infinity;
+
+      for (let units = 0; units <= maxUnits; units++) {
+        const profit = (units * contribution) - fixed;
+        if (profit < minProfit) minProfit = profit;
+        if (profit > maxProfit) maxProfit = profit;
+      }
+
+      if (minProfit === maxProfit) {
+        minProfit -= 1;
+        maxProfit += 1;
+      }
+
+      function xScale(units) {
+        return padding + (units / maxUnits) * (width - 2 * padding);
+      }
+
+      function yScale(profit) {
+        return height - padding - ((profit - minProfit) / (maxProfit - minProfit)) * (height - 2 * padding);
+      }
+
+      // Axes
+      ctx.strokeStyle = '#374151';
+      ctx.lineWidth = 1.5;
+
+      ctx.beginPath();
+      ctx.moveTo(padding, padding);
+      ctx.lineTo(padding, height - padding);
+      ctx.lineTo(width - padding, height - padding);
+      ctx.stroke();
+
+      // Y=0 line
+      if (minProfit < 0 && maxProfit > 0) {
+        const zeroY = yScale(0);
+        ctx.strokeStyle = '#9ca3af';
+        ctx.beginPath();
+        ctx.moveTo(padding, zeroY);
+        ctx.lineTo(width - padding, zeroY);
+        ctx.stroke();
+      }
+
+      // Labels
+      ctx.fillStyle = '#111827';
+      ctx.font = '14px Arial';
+      ctx.fillText('Profit / Loss (£)', 10, 20);
+      ctx.fillText('Units Sold', width - 120, height - 20);
+
+      // Profit line
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+
+      for (let units = 0; units <= maxUnits; units++) {
+        const profit = (units * contribution) - fixed;
+        const x = xScale(units);
+        const y = yScale(profit);
+
+        if (units === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+      ctx.stroke();
+
+      // Break-even point
+      const breakEvenX = xScale(breakEvenUnits);
+      const breakEvenY = yScale(0);
+
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.arc(breakEvenX, breakEvenY, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#111827';
+      ctx.font = '13px Arial';
+      ctx.fillText(`Break-even: ${breakEvenUnits.toFixed(2)} units`, breakEvenX + 10, breakEvenY - 10);
+
+      // X-axis ticks
+      ctx.fillStyle = '#374151';
+      ctx.font = '12px Arial';
+
+      for (let i = 0; i <= 5; i++) {
+        const units = (maxUnits / 5) * i;
+        const x = xScale(units);
+        ctx.beginPath();
+        ctx.moveTo(x, height - padding);
+        ctx.lineTo(x, height - padding + 6);
+        ctx.strokeStyle = '#374151';
+        ctx.stroke();
+        ctx.fillText(units.toFixed(0), x - 10, height - padding + 20);
+      }
+
+      // Y-axis ticks
+      for (let i = 0; i <= 5; i++) {
+        const profit = minProfit + ((maxProfit - minProfit) / 5) * i;
+        const y = yScale(profit);
+        ctx.beginPath();
+        ctx.moveTo(padding - 6, y);
+        ctx.lineTo(padding, y);
+        ctx.strokeStyle = '#374151';
+        ctx.stroke();
+        ctx.fillText(profit.toFixed(0), 5, y + 4);
+      }
+    }
+
+    clearChart();
+  </script>
+</body>
+</html>

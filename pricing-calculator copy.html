@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing Calculator</title>
+  <meta name="description" content="Free pricing calculator to help small businesses set product prices based on cost and target margin.">
+  <meta name="keywords" content="pricing calculator, product pricing calculator, selling price calculator">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://yourdomain.com/pricing-calculator.html">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1000px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f9fafb;
+      color: #374151;
+    }
+
+    .bottom-actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .summary-box {
+      background: #eff6ff;
+      padding: 18px;
+      border-radius: 12px;
+    }
+
+    .summary-box h3 {
+      margin: 0 0 8px 0;
+      font-size: 15px;
+      color: #1e3a8a;
+    }
+
+    .summary-box .value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .small-delete-btn {
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: #fee2e2;
+      color: #b91c1c;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .small-delete-btn:hover {
+      background: #fecaca;
+    }
+
+    .secondary-btn {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .secondary-btn:hover {
+      background: #d1d5db;
+    }
+
+    .danger-btn {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .danger-btn:hover {
+      background: #fecaca;
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="break-even-calculator.html">Break-Even</a>
+    <a href="profit-calculator.html">Profit</a>
+    <a href="pricing-calculator.html">Pricing</a>
+    <a href="margin-calculator.html">Margin</a>
+    <a href="discount-calculator.html">Discount</a>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      <h1>Pricing Calculator</h1>
+      <p>Enter cost and target margin for multiple products to estimate selling price.</p>
+
+      <div class="bottom-actions">
+        <button class="secondary-btn" onclick="exportCSV()">Export CSV</button>
+        <button class="danger-btn" onclick="resetTable()">Reset</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Cost per Unit (£)</th>
+              <th>Target Margin (%)</th>
+              <th>Suggested Selling Price</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="bottom-actions">
+        <button class="primary-btn" onclick="addRow()">Add Row</button>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-box">
+          <h3>Total Products</h3>
+          <div class="value" id="totalProducts">0</div>
+        </div>
+        <div class="summary-box">
+          <h3>Average Target Margin</h3>
+          <div class="value" id="averageMargin">0%</div>
+        </div>
+        <div class="summary-box">
+          <h3>Average Suggested Price</h3>
+          <div class="value" id="averagePrice">£0.00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+        <section class="seo-card">
+            <h2>What is a pricing calculator?</h2>
+            <p>
+            A pricing calculator helps you work out what selling price you should charge based on your cost and your target margin. This is useful when you want to price products properly instead of guessing.
+            </p>
+
+            <h2>How to calculate selling price</h2>
+            <p>
+            The common pricing formula based on margin is:
+            </p>
+            <p class="seo-formula">
+            Selling Price = Cost per Unit ÷ (1 - Target Margin)
+            </p>
+            <p>
+            For example, if your product costs £10 and you want a 40% margin, you divide £10 by 0.60 to get a selling price of about £16.67.
+            </p>
+
+            <h2>Example of a pricing calculation</h2>
+            <p>
+            Imagine your product costs £8 to produce and you want a 50% margin. You would divide £8 by 0.50, which gives a selling price of £16.
+            </p>
+
+            <h2>Why pricing matters for small businesses</h2>
+            <p>
+            Pricing affects your profit, competitiveness, and customer demand. If your price is too low, you may not make enough profit. If it is too high, you may lose customers. A pricing calculator helps you find a better balance.
+            </p>
+
+            <h2>Use this pricing calculator</h2>
+            <p>
+            This calculator helps you estimate the selling price you need based on cost and desired margin. It is useful for product businesses, Etsy sellers, Shopify stores, and service providers setting rates.
+            </p>
+        </section>
+  </div>
+ 
+  <script>
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP'
+      }).format(value);
+    }
+
+    function parseNumber(value) {
+      const num = parseFloat(value);
+      return isNaN(num) ? null : num;
+    }
+
+    function addRow() {
+      const tableBody = document.getElementById('tableBody');
+      const row = document.createElement('tr');
+
+      row.innerHTML = `
+        <td><input class="product-name" type="text" placeholder="e.g. Product A"></td>
+        <td><input class="cost" type="number" step="0.01" placeholder="e.g. 8"></td>
+        <td><input class="margin" type="number" step="0.01" placeholder="e.g. 40"></td>
+        <td class="suggested-price">-</td>
+        <td><button class="small-delete-btn" onclick="deleteRow(this)">Delete</button></td>
+      `;
+
+      tableBody.appendChild(row);
+      row.querySelectorAll('input').forEach(input => input.addEventListener('input', calculateAll));
+      calculateAll();
+    }
+
+    function deleteRow(button) {
+      button.closest('tr').remove();
+      calculateAll();
+    }
+
+    function calculateAll() {
+      const rows = document.querySelectorAll('#tableBody tr');
+      let totalProducts = 0;
+      let totalMargin = 0;
+      let totalPrice = 0;
+
+      rows.forEach(row => {
+        const name = row.querySelector('.product-name').value.trim();
+        const costRaw = row.querySelector('.cost').value;
+        const marginRaw = row.querySelector('.margin').value;
+        const cost = parseNumber(costRaw);
+        const margin = parseNumber(marginRaw);
+        const priceCell = row.querySelector('.suggested-price');
+
+        priceCell.textContent = '-';
+
+        const isEmpty = !name && costRaw === '' && marginRaw === '';
+        if (isEmpty) return;
+        if (cost === null || margin === null || margin >= 100) return;
+
+        const price = cost / (1 - margin / 100);
+        priceCell.textContent = formatCurrency(price);
+
+        totalProducts += 1;
+        totalMargin += margin;
+        totalPrice += price;
+      });
+
+      document.getElementById('totalProducts').textContent = totalProducts;
+      document.getElementById('averageMargin').textContent = totalProducts ? (totalMargin / totalProducts).toFixed(2) + '%' : '0%';
+      document.getElementById('averagePrice').textContent = totalProducts ? formatCurrency(totalPrice / totalProducts) : formatCurrency(0);
+    }
+
+    function exportCSV() {
+      const rows = document.querySelectorAll('#tableBody tr');
+      const csvRows = [[
+        'Product Name', 'Cost per Unit', 'Target Margin', 'Suggested Selling Price'
+      ]];
+
+      rows.forEach(row => {
+        const name = row.querySelector('.product-name').value.trim();
+        const cost = row.querySelector('.cost').value;
+        const margin = row.querySelector('.margin').value;
+        if (!name && cost === '' && margin === '') return;
+
+        csvRows.push([
+          name,
+          cost,
+          margin,
+          row.querySelector('.suggested-price').textContent
+        ]);
+      });
+
+      const csvContent = csvRows.map(row => row.map(value => {
+        const stringValue = String(value ?? '');
+        return /[",\n]/.test(stringValue) ? '"' + stringValue.replace(/"/g, '""') + '"' : stringValue;
+      }).join(',')).join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'pricing-calculator.csv';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    function resetTable() {
+      document.getElementById('tableBody').innerHTML = '';
+      addRow();
+      calculateAll();
+    }
+
+    addRow();
+  </script>
+</body>
+</html>

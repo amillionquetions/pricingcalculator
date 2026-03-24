@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Calculator Tools</title>
+  <meta name="description" content="Free business calculator tools including break-even, profit, pricing, margin, and discount calculators for small businesses and online sellers.">
+  <meta name="keywords" content="business calculators, break-even calculator, profit calculator, pricing calculator, margin calculator, discount calculator">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Business Calculator Tools">
+  <meta property="og:description" content="Free calculator tools for small businesses, Etsy sellers, and online stores.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://yourdomain.com/">
+  <link rel="stylesheet" href="style.css">
+  <!-- Google AdSense -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX"
+     crossorigin="anonymous"></script> -->
+  <style>
+.cookie-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 900px;
+  width: calc(100% - 40px);
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  padding: 20px 24px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 9999;
+}
+
+.cookie-banner p {
+  margin: 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.cookie-banner button {
+  background: #2563eb;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cookie-banner button:hover {
+  background: #1d4ed8;
+}
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="break-even-calculator.html">Break-Even</a>
+    <a href="profit-calculator.html">Profit</a>
+    <a href="pricing-calculator.html">Pricing</a>
+    <a href="margin-calculator.html">Margin</a>
+    <a href="discount-calculator.html">Discount</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      <h1>Free Business Calculator Tools</h1>
+      <p>Simple calculators for small businesses, Etsy sellers, Shopify stores, freelancers, and online sellers.</p>
+
+      <div class="tool-grid">
+        <a class="tool-card" href="break-even-calculator.html">
+          <h2>Break-Even Calculator</h2>
+          <p>Calculate break-even units, revenue, and expected profit across multiple products.</p>
+        </a>
+
+        <a class="tool-card" href="profit-calculator.html">
+          <h2>Profit Calculator</h2>
+          <p>Estimate profit based on selling price, cost, and units sold.</p>
+        </a>
+
+        <a class="tool-card" href="pricing-calculator.html">
+          <h2>Pricing Calculator</h2>
+          <p>Work out what price to charge based on cost and desired profit margin.</p>
+        </a>
+
+        <a class="tool-card" href="margin-calculator.html">
+          <h2>Margin Calculator</h2>
+          <p>Calculate profit margin and markup quickly.</p>
+        </a>
+
+        <a class="tool-card" href="discount-calculator.html">
+          <h2>Discount Calculator</h2>
+          <p>Calculate final price after discount and savings amount.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ad section (separate from homepage card) -->
+   <!-- Replace these placeholder AdSense values after approval:
+           ca-pub-XXXXXXXXXXXX
+           ad-slot: 1111111111/2222222222/3333333333/4444444444 -->
+  <!-- <div class="ad-grid">
+
+    <div class="ad-box">
+      
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="1111111111"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="ad-box">
+      
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="2222222222"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="ad-box">
+      
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="3333333333"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="ad-box">
+     
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="4444444444"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+  </div> -->
+
+  <div id="cookieBanner" class="cookie-banner" style="display:none;">
+    <p>
+      This website uses cookies to improve your experience and to show ads through Google AdSense.
+      By using this site, you agree to our use of cookies.
+    </p>
+    <button onclick="acceptCookies()">Accept</button>
+  </div>
+
+  <script>
+  function acceptCookies() {
+    localStorage.setItem("cookieConsent", "true");
+    document.getElementById("cookieBanner").style.display = "none";
+  }
+
+  if (!localStorage.getItem("cookieConsent")) {
+    document.getElementById("cookieBanner").style.display = "flex";
+  }
+
+  </script>
+
+</body>
+  
+</html>
+

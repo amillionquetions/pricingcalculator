@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profit Calculator</title>
+  <meta name="description" content="Free profit calculator for small businesses and online sellers. Calculate profit based on price, cost, and units sold.">
+  <meta name="keywords" content="profit calculator, business profit calculator, product profit calculator">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://yourdomain.com/profit-calculator.html">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1100px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f9fafb;
+      color: #374151;
+    }
+
+    .bottom-actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .bottom-content {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 0 20px 40px;
+    }
+
+    .seo-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .seo-card h2 {
+      font-size: 28px;
+      margin: 0 0 16px;
+      color: #1f2937;
+    }
+
+    .seo-card p {
+      margin: 0 0 20px;
+      color: #4b5563;
+      line-height: 1.7;
+    }
+
+    .seo-formula {
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 20px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .summary-box {
+      background: #eff6ff;
+      padding: 18px;
+      border-radius: 12px;
+    }
+
+    .summary-box h3 {
+      margin: 0 0 8px 0;
+      font-size: 15px;
+      color: #1e3a8a;
+    }
+
+    .summary-box .value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .small-delete-btn {
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: #fee2e2;
+      color: #b91c1c;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .small-delete-btn:hover {
+      background: #fecaca;
+    }
+
+    .danger-btn {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .danger-btn:hover {
+      background: #fecaca;
+    }
+
+    .profit-positive {
+      color: #047857;
+      font-weight: 700;
+    }
+
+    .profit-negative {
+      color: #b91c1c;
+      font-weight: 700;
+    }
+
+    .secondary-btn {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .secondary-btn:hover {
+      background: #d1d5db;
+    }
+
+    .ad-row {
+      max-width: 1400px;
+      margin: -20px auto 40px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .ad-box {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      min-height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .ad-box-text {
+      color: #6b7280;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+  
+    .cookie-banner {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 900px;
+      width: calc(100% - 40px);
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      padding: 20px 24px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 9999;
+    }
+
+    .cookie-banner p {
+      margin: 0;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    .cookie-banner button {
+      background: #2563eb;
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .cookie-banner button:hover {
+      background: #1d4ed8;
+    }
+
+  </style>
+  <!-- Enable after AdSense approval
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX"
+    crossorigin="anonymous"></script>
+  -->
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="break-even-calculator.html">Break-Even</a>
+    <a href="profit-calculator.html">Profit</a>
+    <a href="pricing-calculator.html">Pricing</a>
+    <a href="margin-calculator.html">Margin</a>
+    <a href="discount-calculator.html">Discount</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      <h1>Profit Calculator</h1>
+            <p>Enter selling price, cost, and units sold for multiple products.</p>
+
+      <div class="bottom-actions">
+        <button class="secondary-btn" onclick="exportCSV()">Export CSV</button>
+        <button class="danger-btn" onclick="resetTable()">Reset</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Selling Price (£)</th>
+              <th>Cost per Unit (£)</th>
+              <th>Units Sold</th>
+              <th>Total Revenue</th>
+              <th>Total Cost</th>
+              <th>Profit</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="bottom-actions">
+        <button class="primary-btn" onclick="addRow()">Add Row</button>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-box">
+          <h3>Total Products</h3>
+          <div class="value" id="totalProducts">0</div>
+        </div>
+        <div class="summary-box">
+          <h3>Total Revenue</h3>
+          <div class="value" id="totalRevenue">£0.00</div>
+        </div>
+        <div class="summary-box">
+          <h3>Total Profit</h3>
+          <div class="value" id="totalProfit">£0.00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ad row below calculator box -->
+  <div class="ad-row">
+    <div class="ad-box">
+      <!-- Enable after AdSense approval
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="1111111111"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      -->
+      <div class="ad-box-text">Ad coming</div>
+    </div>
+    <div class="ad-box">
+      <!-- Enable after AdSense approval
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="2222222222"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      -->
+      <!-- <div class="ad-box-text">Ad placeholder 2<br>Below calculator box</div> -->
+    </div>
+    <div class="ad-box">
+      <!-- Enable after AdSense approval
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="3333333333"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      -->
+      <!-- <div class="ad-box-text">Ad placeholder 3<br>Below calculator box</div> -->
+    </div>
+    <div class="ad-box">
+      <!-- Enable after AdSense approval
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="4444444444"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      -->
+      <!-- <div class="ad-box-text">Ad placeholder 4<br>Below calculator box</div> -->
+    </div>
+  </div>
+
+  <div class="bottom-content">
+        <section class="seo-card">
+                <h2>What is profit?</h2>
+                <p>
+                Profit is the amount left after subtracting total costs from total revenue. If your selling price is higher than your cost, you make a profit on each sale. If your costs are higher than your revenue, you make a loss.
+                </p>
+
+                <h2>How to calculate profit</h2>
+                <p>
+                The basic profit formula is:
+                </p>
+                <p class="seo-formula">
+                Profit = (Selling Price per Unit - Cost per Unit) × Units Sold
+                </p>
+                <p>
+                This means you first work out how much profit you make on one unit, then multiply that by the number of units sold.
+                </p>
+
+                <h2>Example of a profit calculation</h2>
+                <p>
+                Imagine you sell a product for £20 and it costs £8 to make. Your profit per unit is £12. If you sell 150 units, your total profit is £1,800.
+                </p>
+
+                <h2>Why profit analysis matters for small businesses</h2>
+                <p>
+                Profit analysis helps business owners understand whether a product is financially worth selling. It is useful for pricing decisions, product selection, budgeting, and setting realistic sales targets.
+                </p>
+
+                <h2>Use this profit calculator</h2>
+                <p>
+                This calculator helps you quickly estimate profit based on selling price, cost per unit, and units sold. It is useful for small businesses, online sellers, freelancers, and anyone comparing product performance.
+                </p>
+        </section>
+    </div>
+
+  <!-- Ad row below explanation box -->
+  <div class="ad-row">
+    <div class="ad-box">
+      <!-- Enable after AdSense approval
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="5555555555"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      -->
+      <div class="ad-box-text">Ad coming</div>
+    </div>
+    <div class="ad-box">
+      <!-- Enable after AdSense approval
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="6666666666"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      -->
+      <!-- <div class="ad-box-text">Ad placeholder 2<br>Below explanation box</div> -->
+    </div>
+    <div class="ad-box">
+      <!-- Enable after AdSense approval
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="7777777777"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      -->
+      <!-- <div class="ad-box-text">Ad placeholder 3<br>Below explanation box</div> -->
+    </div>
+    <div class="ad-box">
+      <!-- Enable after AdSense approval
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXX"
+           data-ad-slot="8888888888"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      -->
+      <!-- <div class="ad-box-text">Ad placeholder 4<br>Below explanation box</div> -->
+    </div>
+  </div>
+
+    <style>
+
+    @media (max-width: 768px) {
+      .ad-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    </style>
+
+    <script>
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP'
+      }).format(value);
+    }
+
+    function parseNumber(value) {
+      const num = parseFloat(value);
+      return isNaN(num) ? null : num;
+    }
+
+    function addRow() {
+      const tableBody = document.getElementById('tableBody');
+      const row = document.createElement('tr');
+
+      row.innerHTML = `
+        <td><input class="product-name" type="text" placeholder="e.g. Product A"></td>
+        <td><input class="price" type="number" step="0.01" placeholder="e.g. 20"></td>
+        <td><input class="cost" type="number" step="0.01" placeholder="e.g. 8"></td>
+        <td><input class="units" type="number" step="1" placeholder="e.g. 150"></td>
+        <td class="revenue">-</td>
+        <td class="total-cost">-</td>
+        <td class="profit">-</td>
+        <td><button class="small-delete-btn" onclick="deleteRow(this)">Delete</button></td>
+      `;
+
+      tableBody.appendChild(row);
+      row.querySelectorAll('input').forEach(input => input.addEventListener('input', calculateAll));
+      calculateAll();
+    }
+
+    function deleteRow(button) {
+      button.closest('tr').remove();
+      calculateAll();
+    }
+
+    function calculateAll() {
+      const rows = document.querySelectorAll('#tableBody tr');
+      let totalProducts = 0;
+      let totalRevenue = 0;
+      let totalProfit = 0;
+
+      rows.forEach(row => {
+        const name = row.querySelector('.product-name').value.trim();
+        const price = parseNumber(row.querySelector('.price').value);
+        const cost = parseNumber(row.querySelector('.cost').value);
+        const units = parseNumber(row.querySelector('.units').value);
+
+        const revenueCell = row.querySelector('.revenue');
+        const totalCostCell = row.querySelector('.total-cost');
+        const profitCell = row.querySelector('.profit');
+
+        revenueCell.textContent = '-';
+        totalCostCell.textContent = '-';
+        profitCell.textContent = '-';
+        profitCell.classList.remove('profit-positive', 'profit-negative');
+
+        if (!name && price === null && cost === null && units === null) return;
+        if (price === null || cost === null || units === null) return;
+
+        const revenue = price * units;
+        const totalCost = cost * units;
+        const profit = revenue - totalCost;
+
+        revenueCell.textContent = formatCurrency(revenue);
+        totalCostCell.textContent = formatCurrency(totalCost);
+        profitCell.textContent = formatCurrency(profit);
+        profitCell.classList.add(profit >= 0 ? 'profit-positive' : 'profit-negative');
+
+        totalProducts += 1;
+        totalRevenue += revenue;
+        totalProfit += profit;
+      });
+
+      document.getElementById('totalProducts').textContent = totalProducts;
+      document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
+      document.getElementById('totalProfit').textContent = formatCurrency(totalProfit);
+    }
+
+    function exportCSV() {
+      const rows = document.querySelectorAll('#tableBody tr');
+      const csvRows = [[
+        "Product Name",
+        "Selling Price",
+        "Cost per Unit",
+        "Units Sold",
+        "Total Revenue",
+        "Total Cost",
+        "Profit"
+      ]];
+
+      rows.forEach(row => {
+        const name = row.querySelector('.product-name').value;
+        const price = row.querySelector('.price').value;
+        const cost = row.querySelector('.cost').value;
+        const units = row.querySelector('.units').value;
+
+        if (!name && !price && !cost && !units) return;
+
+        csvRows.push([
+          name,
+          price,
+          cost,
+          units,
+          row.querySelector('.revenue').textContent,
+          row.querySelector('.total-cost').textContent,
+          row.querySelector('.profit').textContent
+        ]);
+      });
+
+      const csvContent = csvRows
+        .map(row => row.map(value => {
+          const stringValue = String(value ?? '');
+          return /[",\n]/.test(stringValue)
+            ? '"' + stringValue.replace(/"/g, '""') + '"'
+            : stringValue;
+        }).join(','))
+        .join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'profit-calculator.csv';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    function resetTable() {
+      document.getElementById('tableBody').innerHTML = '';
+      addRow();
+      calculateAll();
+    }
+
+    addRow();
+  </script>
+
+  <div id="cookieBanner" class="cookie-banner" style="display:none;">
+    <p>
+      This website uses cookies to improve your experience and to show ads through Google AdSense.
+      By using this site, you agree to our use of cookies.
+    </p>
+    <button onclick="acceptCookies()">Accept</button>
+  </div>
+
+  <script>
+  function acceptCookies() {
+    localStorage.setItem("cookieConsent", "true");
+    document.getElementById("cookieBanner").style.display = "none";
+  }
+
+  if (!localStorage.getItem("cookieConsent")) {
+    document.getElementById("cookieBanner").style.display = "flex";
+  }
+  </script>
+  
+</body>
+
+</html>
