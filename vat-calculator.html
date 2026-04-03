@@ -340,6 +340,10 @@
         </table>
       </div>
 
+      <p style="font-size:14px; color:#6b7280; margin-top:10px;">
+        Scroll to the right for more columns →
+        </p>
+
       <div class="bottom-actions">
         <button class="primary-btn" onclick="addRow()">Add Product</button>
       </div>
@@ -638,19 +642,19 @@
           return;
         }
 
-        if (amount === null || vatRate === null) {
-          if (!firstError) {
-            firstError = `Please complete all numeric fields for row ${index + 1}.`;
-          }
-          return;
-        }
+        // if (amount === null || vatRate === null) {
+        //   if (!firstError) {
+        //     firstError = `Please complete all numeric fields for row ${index + 1}.`;
+        //   }
+        //   return;
+        // }
 
-        if (amount < 0 || vatRate < 0) {
-          if (!firstError) {
-            firstError = `Please enter positive numbers only in row ${index + 1}.`;
-          }
-          return;
-        }
+        // if (amount < 0 || vatRate < 0) {
+        //   if (!firstError) {
+        //     firstError = `Please enter positive numbers only in row ${index + 1}.`;
+        //   }
+        //   return;
+        // }
 
         const multiplier = 1 + (vatRate / 100);
         let beforeVAT = 0;
