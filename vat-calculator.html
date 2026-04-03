@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Free VAT Calculator – Add or Remove VAT Easily</title>
+  <meta name="description" content="Free VAT calculator to add or remove VAT instantly. Calculate VAT amounts and final prices for businesses and individuals worldwide.">
+  <link rel="canonical" href="https://freebusinesscalculators.com/vat-calculator.html">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6916313758528232"
+     crossorigin="anonymous"></script>
+ 
+</head>
+
+<body>
+
+<nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="break-even-calculator.html">Break-Even</a>
+    <a href="profit-calculator.html">Profit</a>
+    <a href="pricing-calculator.html">Pricing</a>
+    <a href="margin-calculator.html">Margin</a>
+    <a href="discount-calculator.html">Discount</a>
+    <a href="vat-calculator.html">VAT</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+  
+</nav>
+
+<div class="container">
+  <div class="card">
+
+    <h1>VAT Calculator</h1>
+    <p>Calculate VAT instantly. Add VAT to a price or remove VAT from a total.</p>
+
+    <label>Amount:</label>
+    <input type="number" id="amount" placeholder="Enter amount">
+
+    <label>VAT Rate (%):</label>
+    <input type="number" id="vatRate" value="20">
+
+    <div style="margin-top: 15px;">
+      <button onclick="addVAT()">Add VAT</button>
+      <button onclick="removeVAT()">Remove VAT</button>
+    </div>
+
+    <h3 id="result"></h3>
+
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h2>What is VAT?</h2>
+    <p>
+      VAT (Value Added Tax) is a consumption tax applied to goods and services.
+      Businesses charge VAT on sales and can reclaim VAT on purchases.
+    </p>
+
+    <h2>How to calculate VAT</h2>
+    <p>
+      To add VAT: multiply the amount by (1 + VAT rate).  
+      To remove VAT: divide the total by (1 + VAT rate).
+    </p>
+  </div>
+</div>
+
+<script>
+function addVAT() {
+  let amount = parseFloat(document.getElementById("amount").value);
+  let rate = parseFloat(document.getElementById("vatRate").value);
+
+  if (isNaN(amount) || isNaN(rate)) {
+    document.getElementById("result").innerText = "Enter valid numbers";
+    return;
+  }
+
+  let result = amount * (1 + rate / 100);
+  document.getElementById("result").innerText = "Total with VAT: " + result.toFixed(2);
+}
+
+function removeVAT() {
+  let amount = parseFloat(document.getElementById("amount").value);
+  let rate = parseFloat(document.getElementById("vatRate").value);
+
+  if (isNaN(amount) || isNaN(rate)) {
+    document.getElementById("result").innerText = "Enter valid numbers";
+    return;
+  }
+
+  let result = amount / (1 + rate / 100);
+  document.getElementById("result").innerText = "Price before VAT: " + result.toFixed(2);
+}
+</script>
+
+</body>
+</html>
